@@ -1,0 +1,19 @@
+# Python logs and caches
+__pycache__/
+*.log
+*.txt
+!requirements.txt
+!blacklist.txt
+!classes.txt
+
+# Large model files
+models/
+*.pt
+
+# Video processing artifacts
+outputs/
+uploads/
+
+# IDE files
+.vscode/
+.idea/
