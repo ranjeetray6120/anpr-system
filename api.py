@@ -7,6 +7,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import shutil
 import os
+import os
+# Disable OneDNN to fix PaddlePaddle PIR/OneDNN attribute error on some CPUs
+os.environ["FLAGS_enable_onednn"] = "0"
 import uuid
 import cv2
 from typing import Dict, List
