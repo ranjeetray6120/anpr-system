@@ -1,6 +1,6 @@
 ultralytics
 paddleocr
-paddlepaddle
+paddlepaddle==2.6.2
 protobuf>=3.20.2
 fastapi
 uvicorn
