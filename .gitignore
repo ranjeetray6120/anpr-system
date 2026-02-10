@@ -6,9 +6,10 @@ __pycache__/
 !blacklist.txt
 !classes.txt
 
-# Large model files
+# Models (Track custom models, ignore large generic ones)
 models/
-*.pt
+!models/*.pt
+!no_sitbelt.pt
 
 # Video processing artifacts
 outputs/
