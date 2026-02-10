@@ -96,7 +96,7 @@ class ANPRService(BaseTrafficService):
                 if res_full and res_full[0]:
                     detected_text = " ".join([l[1][0] for l in res_full[0]])
         else:
-            res_full = self.ocr.ocr(plate_input, cls=True)
+            res_full = self.ocr.ocr(plate_input)
             if res_full and res_full[0]:
                 detected_text = " ".join([l[1][0] for l in res_full[0]])
         
