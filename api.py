@@ -173,8 +173,8 @@ def process_video_task(job_id: str, input_path: str, output_path: str, case_type
                             "VehicleID": owner,
                             "Type": msg_type,
                             "Plate": res["text"],
-                            "FullImgUrl": f"http://localhost:8000/outputs/assets/{full_name}",
-                            "CropImgUrl": f"http://localhost:8000/outputs/assets/{crop_name}"
+                            "FullImgUrl": f"{UPLOAD_DIR}/assets/{full_name}",
+                            "CropImgUrl": f"{UPLOAD_DIR}/assets/{crop_name}"
                         }
                         jobs[job_id]["report"].append(formatted)
                     
@@ -258,8 +258,8 @@ def process_video_task(job_id: str, input_path: str, output_path: str, case_type
                         if crop.size > 0:
                             cv2.imwrite(os.path.join(assets_dir, crop_name), crop)
                             
-                        formatted["FullImgUrl"] = f"http://localhost:8000/outputs/assets/{full_name}"
-                        formatted["CropImgUrl"] = f"http://localhost:8000/outputs/assets/{crop_name}"
+                        formatted["FullImgUrl"] = f"outputs/assets/{full_name}"
+                        formatted["CropImgUrl"] = f"outputs/assets/{crop_name}"
 
                     jobs[job_id]["report"].append(formatted)
 
@@ -269,7 +269,7 @@ def process_video_task(job_id: str, input_path: str, output_path: str, case_type
         out.release()
         jobs[job_id]["status"] = "completed"
         # Return full URL so frontend on different port/host can find it
-        jobs[job_id]["video_url"] = f"http://localhost:8000/outputs/{os.path.basename(output_path)}"
+        jobs[job_id]["video_url"] = f"/outputs/{os.path.basename(output_path)}"
     except Exception as e:
         import traceback
         error_msg = f"{str(e)}\n{traceback.format_exc()}"
