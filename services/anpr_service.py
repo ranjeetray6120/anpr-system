@@ -79,8 +79,8 @@ class ANPRService(BaseTrafficService):
             top_half = plate_input[0:half_h, :]
             bottom_half = plate_input[half_h:, :]
 
-            res_top = self.ocr.ocr(top_half, cls=True)
-            res_bottom = self.ocr.ocr(bottom_half, cls=True)
+            res_top = self.ocr.ocr(top_half)
+            res_bottom = self.ocr.ocr(bottom_half)
             
             text_top = " ".join([l[1][0] for l in res_top[0]]) if res_top and res_top[0] else ""
             text_bottom = " ".join([l[1][0] for l in res_bottom[0]]) if res_bottom and res_bottom[0] else ""
@@ -92,7 +92,7 @@ class ANPRService(BaseTrafficService):
                 detected_text = raw_combined
             else:
                  # Fallback to full image if split failed
-                res_full = self.ocr.ocr(plate_input, cls=True)
+                res_full = self.ocr.ocr(plate_input)
                 if res_full and res_full[0]:
                     detected_text = " ".join([l[1][0] for l in res_full[0]])
         else:
