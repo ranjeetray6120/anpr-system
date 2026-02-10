@@ -28,10 +28,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-UPLOAD_DIR = "uploads"
-OUTPUT_DIR = "outputs"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+def check_dirs():
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    os.makedirs(os.path.join(OUTPUT_DIR, "assets"), exist_ok=True)
+
+check_dirs()
 
 app.mount("/outputs", StaticFiles(directory=OUTPUT_DIR), name="outputs")
 
@@ -173,8 +175,8 @@ def process_video_task(job_id: str, input_path: str, output_path: str, case_type
                             "VehicleID": owner,
                             "Type": msg_type,
                             "Plate": res["text"],
-                            "FullImgUrl": f"{UPLOAD_DIR}/assets/{full_name}",
-                            "CropImgUrl": f"{UPLOAD_DIR}/assets/{crop_name}"
+                            "FullImgUrl": f"/outputs/assets/{full_name}",
+                            "CropImgUrl": f"/outputs/assets/{crop_name}"
                         }
                         jobs[job_id]["report"].append(formatted)
                     
@@ -258,8 +260,8 @@ def process_video_task(job_id: str, input_path: str, output_path: str, case_type
                         if crop.size > 0:
                             cv2.imwrite(os.path.join(assets_dir, crop_name), crop)
                             
-                        formatted["FullImgUrl"] = f"outputs/assets/{full_name}"
-                        formatted["CropImgUrl"] = f"outputs/assets/{crop_name}"
+                        formatted["FullImgUrl"] = f"/outputs/assets/{full_name}"
+                        formatted["CropImgUrl"] = f"/outputs/assets/{crop_name}"
 
                     jobs[job_id]["report"].append(formatted)
 
@@ -281,6 +283,7 @@ def process_video_task(job_id: str, input_path: str, output_path: str, case_type
 
 @app.post("/api/{case_type}")
 async def start_job(case_type: str, background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+    check_dirs()
     job_id = str(uuid.uuid4())
     input_path = os.path.join(UPLOAD_DIR, f"{job_id}_{file.filename}")
     with open(input_path, "wb") as buffer:
