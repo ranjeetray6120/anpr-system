@@ -79,8 +79,12 @@ class ANPRService(BaseTrafficService):
             top_half = plate_input[0:half_h, :]
             bottom_half = plate_input[half_h:, :]
 
-            res_top = self.ocr.ocr(top_half)
-            res_bottom = self.ocr.ocr(bottom_half)
+            # Ensure 3 channels for PaddleOCR (Fixes IndexError on some versions)
+            top_bgr = cv2.cvtColor(top_half, cv2.COLOR_GRAY2BGR)
+            bottom_bgr = cv2.cvtColor(bottom_half, cv2.COLOR_GRAY2BGR)
+
+            res_top = self.ocr.ocr(top_bgr)
+            res_bottom = self.ocr.ocr(bottom_bgr)
             
             text_top = " ".join([l[1][0] for l in res_top[0]]) if res_top and res_top[0] else ""
             text_bottom = " ".join([l[1][0] for l in res_bottom[0]]) if res_bottom and res_bottom[0] else ""
@@ -96,7 +100,9 @@ class ANPRService(BaseTrafficService):
                 if res_full and res_full[0]:
                     detected_text = " ".join([l[1][0] for l in res_full[0]])
         else:
-            res_full = self.ocr.ocr(plate_input)
+            # Ensure 3 channels for PaddleOCR
+            plate_bgr = cv2.cvtColor(plate_input, cv2.COLOR_GRAY2BGR)
+            res_full = self.ocr.ocr(plate_bgr)
             if res_full and res_full[0]:
                 detected_text = " ".join([l[1][0] for l in res_full[0]])
         
