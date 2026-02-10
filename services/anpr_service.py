@@ -11,7 +11,7 @@ class ANPRService(BaseTrafficService):
     def __init__(self, base_model="yolo11n.pt", anpr_model="anpr_plat.pt"):
         super().__init__(model_path=base_model)
         self.anpr_model = YOLO(anpr_model).to(self.device)
-        self.ocr = PaddleOCR(use_angle_cls=True, lang='en', show_log=False)
+        self.ocr = PaddleOCR(use_angle_cls=True, lang='en')
         self.seen_plates = set()
         self.blacklist = self._load_blacklist()
 
