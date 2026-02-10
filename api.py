@@ -154,8 +154,8 @@ def process_video_task(job_id: str, input_path: str, output_path: str, case_type
                             cv2.putText(frame, f"{res['text']} [ALERT]", (b[0], b[1]-10), 0, 0.6, (0, 0, 255), 2)
 
                         # Save ANPR Images (Full + Crop)
+                        check_dirs()
                         assets_dir = os.path.join(OUTPUT_DIR, "assets")
-                        os.makedirs(assets_dir, exist_ok=True)
                         
                         full_name = f"anpr_{uuid.uuid4().hex[:8]}.jpg"
                         crop_name = f"anpr_crop_{uuid.uuid4().hex[:8]}.jpg"
@@ -245,8 +245,8 @@ def process_video_task(job_id: str, input_path: str, output_path: str, case_type
                     }
 
                     if v["type"] in ["NO HELMET", "WRONG SIDE", "WRONG LANE", "TRIPLE RIDING", "STALLED VEHICLE", "NO SEATBELT"]:
+                        check_dirs()
                         assets_dir = os.path.join(OUTPUT_DIR, "assets")
-                        os.makedirs(assets_dir, exist_ok=True)
                         
                         full_name = f"full_{uuid.uuid4().hex[:8]}.jpg"
                         crop_name = f"crop_{uuid.uuid4().hex[:8]}.jpg"
