@@ -1,14 +1,16 @@
 import os
+# Disable OneDNN and PIR features to fix PaddlePaddle compatibility issues on some CPUs
+os.environ["FLAGS_enable_onednn"] = "0"
+os.environ["FLAGS_use_onednn"] = "0"
+os.environ["FLAGS_enable_pir_api"] = "0"
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
+os.environ["PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK"] = "True"
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks, Form
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import shutil
-import os
-# Disable OneDNN to fix PaddlePaddle PIR/OneDNN attribute error on some CPUs
-os.environ["FLAGS_enable_onednn"] = "0"
 import uuid
 import cv2
 from typing import Dict, List
